@@ -20,6 +20,7 @@ requirements:
     - pandas>=0.21
     - dask>=0.19
     - xlrd
+    - openpyxl
 
 test:
   source_files:
