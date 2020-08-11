@@ -1,8 +1,8 @@
+from glob import glob
 import pandas as pd
 import dask.dataframe as dd
 from dask import delayed
 from intake.source.base import DataSource, Schema
-from glob import glob
 
 
 class ExcelSource(DataSource):
@@ -12,7 +12,7 @@ class ExcelSource(DataSource):
 
     """
     name = 'excel'
-    version = '0.0.1'
+    version = '0.1.0'
     container = 'dataframe'
     partition_access = True
 
@@ -41,27 +41,27 @@ class ExcelSource(DataSource):
 
         super(ExcelSource, self).__init__(metadata=metadata)
 
-    def _open_dataset(self, urlpath):
+    def _open_dataset(self):
         """Open dataset using dask and use pattern fields to set new columns
            ToDo: remote file source
         """
+        # sort glob to have some control over output
         parts = [delayed(pd.read_excel)(fname, **self._excel_kwargs)
-         for fname in sorted(glob(self.urlpath))] # sort glob to have some control over output
+                 for fname in sorted(glob(self.urlpath))]
         self._dataframe = dd.from_delayed(parts)
 
     def _get_schema(self):
-        urlpath = self._get_cache(self.urlpath)[0]
-
         if self._dataframe is None:
-            self._open_dataset(urlpath)
+            self._open_dataset()
 
         dtypes = self._dataframe._meta.dtypes.to_dict()
         dtypes = {n: str(t) for (n, t) in dtypes.items()}
         return Schema(datashape=None,
-                           dtype=dtypes,
-                           shape=(None, len(dtypes)),
-                           npartitions=self._dataframe.npartitions,
-                           extra_metadata={})
+                      dtype=dtypes,
+                      shape=(None, len(dtypes)),
+                      npartitions=self._dataframe.npartitions,
+                      extra_metadata={}
+                     )
 
     def _get_partition(self, i):
         self._get_schema()
