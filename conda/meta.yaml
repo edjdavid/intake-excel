@@ -1,0 +1,39 @@
+package:
+   name: intake-excel
+   version: {{ GIT_DESCRIBE_TAG }}
+
+source:
+   path: ..
+
+build:
+  number: {{ GIT_DESCRIBE_NUMBER|int }}
+  noarch: python
+  script: python setup.py install --single-version-externally-managed --record=record.txt
+
+requirements:
+  build:
+    - python
+    - jinja2
+  run:
+    - python
+    - intake
+    - pandas>=0.21
+    - dask>=0.19
+    - xlrd
+
+test:
+  source_files:
+    - tests
+  requires:
+    - coverage
+    - pytest
+    - pytest-cov
+  commands:
+    - py.test --verbose --cov=intake_excel tests
+
+about:
+  home: 
+  license: BSD
+  license_file: LICENSE
+  summary: |
+    Excel plugin for Intake
