@@ -12,7 +12,7 @@ class ExcelSource(DataSource):
 
     """
     name = 'excel'
-    version = '0.1.0'
+    version = '0.1.1'
     container = 'dataframe'
     partition_access = True
 
@@ -46,8 +46,12 @@ class ExcelSource(DataSource):
            ToDo: remote file source
         """
         # sort glob to have some control over output
+        filenames = sorted(glob(self.urlpath))
+        # glob returns empty on remote protocols
+        if len(filenames) == 0:
+            filenames = [self.urlpath]
         parts = [delayed(pd.read_excel)(fname, **self._excel_kwargs)
-                 for fname in sorted(glob(self.urlpath))]
+                 for fname in filenames]
         self._dataframe = dd.from_delayed(parts)
 
     def _get_schema(self):
