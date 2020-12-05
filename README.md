@@ -7,7 +7,7 @@ Uses pandas.read_excel for loading single or multiple (via glob patterns) xls/xl
 
 ## User Installation
 
-To install the intake-sql plugin, execute the following command
+To install the intake-excel plugin, execute the following command
 ```
 conda install -c edjdavid intake-excel
 ```

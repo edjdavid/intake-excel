@@ -10,7 +10,7 @@ setup(
     version=versioneer.get_version(),
     cmdclass=versioneer.get_cmdclass(),
     description='Excel plugin for Intake',
-    url='',
+    url='https://github.com/edjdavid/intake-excel',
     maintainer='Eduardo David Jr',
     maintainer_email='edjdavid@users.noreply.github.com',
     license='BSD',
@@ -24,6 +24,7 @@ setup(
     },
     include_package_data=True,
     install_requires=requires,
-    long_description=open('README.rst').read(),
+    long_description=open('README.md').read(),
+    long_description_content_type='text/markdown',
     zip_safe=False,
 )
