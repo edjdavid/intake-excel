@@ -1,1 +1,12 @@
-README.md
+
+recursive-include intake_excel *.py
+
+include setup.cfg
+include setup.py
+include requirements.txt
+include README.md
+include LICENSE
+include MANIFEST.in
+
+include versioneer.py
+include intake_excel/_version.py
